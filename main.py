@@ -11,7 +11,7 @@ covid = pd.read_csv(filename)[columns]
 covid.dropna(inplace=True)
 
 # Cambiar el departamento aqui
-covid = covid[covid['region'] == 'AREQUIPA']
+covid = covid[covid['region'] == 'LIMA']
 
 
 covid.loc[:, 'date'] = pd.to_datetime(covid['date'])

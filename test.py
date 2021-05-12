@@ -16,7 +16,7 @@ def test(path, covid_region, regions, labels, alpha_values, iterations_values, e
         test_results = {}
         covid_test = covid_region[0].groupby(by=['date']).sum()
         covid_test['date'] = covid_test.index
-        covid_x = covid_test['date']
+        covid_x = covid_test[['date']]
 
         for label in labels:
             path.append(label)
