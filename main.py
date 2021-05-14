@@ -11,7 +11,7 @@ covid = pd.read_csv(filename)[columns]
 covid.dropna(inplace=True)
 
 # Cambiar el departamento aqui
-covid = covid[covid['region'] == 'LIMA']
+covid = covid[covid['region'] == 'TUMBES']
 
 
 covid.loc[:, 'date'] = pd.to_datetime(covid['date'])
@@ -22,7 +22,7 @@ labels = ['confirmed', 'deaths']
 
 train_size = 0.7
 alpha_values = [0.1, 0.3, 0.5, 0.7]
-iterations_values = [100, 500, 1000, 5000]
+iterations_values = [10000]
 error_methods = ['mean_absolute_error', 'mean_squared_error']
 regularization = ['l1', 'l2']
 opt_methods = ['momentum', 'adagrad', 'adadelta', 'adam']
