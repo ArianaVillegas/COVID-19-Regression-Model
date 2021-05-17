@@ -1,6 +1,8 @@
 import os
 import json
 
+import numpy as np
+
 from model import apply_models
 
 
@@ -14,9 +16,15 @@ def test(path, covid_region, regions, labels, alpha_values, iterations_values, e
 
         # Preprocess data
         test_results = {}
-        covid_test = covid_region[0].groupby(by=['date']).sum()
-        covid_test['date'] = covid_test.index
-        covid_x = covid_test[['date']]
+        covid_test = region.groupby(by=['date_num', 'lon', 'lat']).sum()
+        index = np.array(list(map(lambda t: list(t), covid_test.index)))
+        covid_test['date_num'] = index[:, 0]
+        covid_test['lon'] = index[:, 1]
+        covid_test['lat'] = index[:, 2]
+        covid_x = covid_test[['date_num', 'lon', 'lat']]
+        covid_x_label = {}
+        for _, row in region.iterrows():
+            covid_x_label[row['date_num']] = row['date']
 
         for label in labels:
             path.append(label)
@@ -43,8 +51,8 @@ def test(path, covid_region, regions, labels, alpha_values, iterations_values, e
                                 os.makedirs('/'.join(path))
 
                                 size = int(len(covid_test) * train_size)
-                                apply_models(covid_x, covid_y, size, test_results, itr, err, alpha, reg, opt,
-                                             '/'.join(path))
+                                apply_models(covid_x, covid_x_label, covid_y, size, test_results, itr, err, alpha,
+                                             reg, opt, '/'.join(path))
 
                                 path.pop()
                             path.pop()
